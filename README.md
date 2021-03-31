@@ -1,7 +1,7 @@
 # Elite Dangerous News Discord Bot
 This bot primarily uses the official API provided by Frontier Developments, at: https://cms.elitedangerous.com/api/news
 
-<!-- TBD ### If you want, you can now [invite the Elite Dangerous News Discord bot](.....) to your server. -->
+### If you want, you can now [invite the Elite Dangerous News Discord bot](https://discord.com/api/oauth2/authorize?client_id=802086433526513685&permissions=523328&scope=bot) to your server.
 
 ## Appearance
 ![Example](https://github.com/TheAlienDrew/elite-dangerous-news-discord-bot/blob/main/images/example.png?raw=true) | ![Information](https://github.com/TheAlienDrew/elite-dangerous-news-discord-bot/blob/main/images/information.png?raw=true)
