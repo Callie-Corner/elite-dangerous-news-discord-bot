@@ -563,7 +563,7 @@ function createArticlePost(msg, post) {
                     desc.push(newDescription);
 
                     // need to dynamically create the new fields to overcome description/field string length restrictions
-                    while (extDescription.length != 0) {
+                    /*while (extDescription.length != 0) {
                         let iterationChunkEnd = -1;
                         let iterationEndStringTestIndex = 0;
                         while (iterationChunkEnd <= 0 && iterationEndStringTestIndex < endStringTests.length) {
@@ -581,7 +581,7 @@ function createArticlePost(msg, post) {
 
                             iterationEndStringTestIndex++;
                         }
-                    }
+                    }*/
                 }
 
                 firstEndStringTestIndex++;
