@@ -509,21 +509,18 @@ function createArticlePost(msg, post) {
     firstSentence = convertToDiscord(firstSentence);
     moreSentences = convertToDiscord(moreSentences);
 
+    // include the forum link (nice purpose for cases where articles have same slug article link)
+    let postForumURL = post.forumLink;
+
+    // start creating the embed
+    const embed = new Discord.MessageEmbed()
+      .setColor(MAIN_BOT_COLOR)
+      .setAuthor(moment(new Date(post.date)).format('DD MMM YYYY').toUpperCase())
+      .setTitle('__' + title + '__')
+      .setURL(EDN_ARTICLE_URL_PREFIX + post.slug)
+      .setFooter(post.date, BOT_FOOTER_IMAGE);
+
     (async () => {
-        // include the forum link (nice purpose for cases where articles have same slug article link)
-        let postNodeLink = ED_NODE_URL_PREFIX + post.nid;
-        let postNodeDataJSON = await fetch(postNodeLink + IN_JSON_FORMAT);
-        let postNodeData = await postNodeDataJSON.json();
-        let postForumURL = postNodeData.field_forum_link[0].value;
-
-        // start creating the embed
-        const embed = new Discord.MessageEmbed()
-          .setColor(MAIN_BOT_COLOR)
-          .setAuthor(moment(new Date(post.date)).format('DD MMM YYYY').toUpperCase())
-          .setTitle('__' + title + '__')
-          .setURL(EDN_ARTICLE_URL_PREFIX + post.slug)
-          .setFooter(post.date, BOT_FOOTER_IMAGE);
-
         // conditionally set image if there is one, else use a specific image
         let imageToCheck;
         let imageExists = true;
