@@ -547,34 +547,44 @@ function createArticlePost(msg, post) {
         const endStringTests = ['\n\n', '\n', ' ', ''];
         if (description.length > DESCRIPTION_LENGTH) {
             let firstChunkEnd = -1;
-            let endStringTestIndex = 0;
-            while (firstChunkEnd <= 0 && endStringTestIndex < endStringTests.length) {
-                let endString = endStringTests[endStringTestIndex];
+            let firstEndStringTestIndex = 0;
+            while (firstChunkEnd <= 0 && firstEndStringTestIndex < endStringTests.length) {
+                let firstEndString = endStringTests[firstEndStringTestIndex];
                 // need to make sure that the first chunk ends at a double newline, single newline, space, or at max length
-                let newDescription = description.substring(0, DESCRIPTION_LENGTH + endString.length);
-                firstChunkEnd = newDescription.lastIndexOf(endString);
+                let newDescription = description.substring(0, DESCRIPTION_LENGTH + firstEndString.length);
+                firstChunkEnd = newDescription.lastIndexOf(firstEndString);
 
                 // can't go further if firstChunkEnd, wasn't found
-                if (firstChunkEnd > 0) {/*
+                if (firstChunkEnd > 0) {
                     // fix the newDescription to match requirements, and get the extended description
                     newDescription = description.substring(0, firstChunkEnd);
-                    let extDescription = description.substring(firstChunkEnd + endString.length);
+                    let extDescription = description.substring(firstChunkEnd + firstEndString.length);
 
                     desc.push(newDescription);
 
                     // need to dynamically create the new fields to overcome description/field string length restrictions
                     while (extDescription.length != 0) {
-                        // similar chunking like in normal description
-                        let newFieldValue = extDescription.substring(0, FIELD_VALUE_LENGTH + endString.length);
-                        let iterationChunkEnd = newFieldValue.lastIndexOf(endString);
-                        newFieldValue = extDescription.substring(0, iterationChunkEnd);
-                        desc.push(newFieldValue);
-                        extDescription = extDescription.substring(iterationChunkEnd, iterationChunkEnd + endString.length);
-                    }*/ 
-desc.push(firstChunkEnd); // TESTING
+                        let iterationChunkEnd = -1;
+                        let iterationEndStringTestIndex = 0;
+                        while (iterationChunkEnd <= 0 && iterationEndStringTestIndex < endStringTests.length) {
+                            let iterationEndString = endStringTests[iterationEndStringTestIndex];
+                            // similar chunking like in normal description
+                            let newFieldValue = extDescription.substring(0, FIELD_VALUE_LENGTH + iterationEndString.length);
+                            iterationChunkEnd = newFieldValue.lastIndexOf(iterationEndString);
+
+                            // can't go further if iterationChunkEnd, wasn't found
+                            if (iterationChunkEnd > 0) {
+                                newFieldValue = extDescription.substring(0, iterationChunkEnd);
+                                desc.push(newFieldValue);
+                                extDescription = extDescription.substring(iterationChunkEnd, iterationChunkEnd + iterationEndString.length);
+                            }
+
+                            iterationEndStringTestIndex++;
+                        }
+                    }
                 }
 
-                endStringTestIndex++;
+                firstEndStringTestIndex++;
             }
         } else desc.push(description);
 
