@@ -548,7 +548,7 @@ function createArticlePost(msg, post) {
         if (description.length > DESCRIPTION_LENGTH) {
             let firstChunkEnd = -1;
             let firstEndStringTestIndex = 0;
-            while (firstChunkEnd <= 0 && firstEndStringTestIndex < endStringTests.length) {
+            while (firstChunkEnd < 0 && firstEndStringTestIndex < endStringTests.length) {
                 let firstEndString = endStringTests[firstEndStringTestIndex];
                 // need to make sure that the first chunk ends at a double newline, single newline, space, or at max length
                 let newDescription = description.substring(0, DESCRIPTION_LENGTH + firstEndString.length);
@@ -566,7 +566,7 @@ function createArticlePost(msg, post) {
                     while (extDescription.length != 0) {
                         let iterationChunkEnd = -1;
                         let iterationEndStringTestIndex = 0;
-                        while (iterationChunkEnd <= 0 && iterationEndStringTestIndex < endStringTests.length) {
+                        while (iterationChunkEnd < 0 && iterationEndStringTestIndex < endStringTests.length) {
                             let iterationEndString = endStringTests[iterationEndStringTestIndex];
                             // similar chunking like in normal description
                             let newFieldValue = extDescription.substring(0, FIELD_VALUE_LENGTH + iterationEndString.length);
