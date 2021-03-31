@@ -508,14 +508,14 @@ function createArticlePost(msg, post) {
     title = escapeMarkdown(title);
     firstSentence = convertToDiscord(firstSentence);
     moreSentences = convertToDiscord(moreSentences);
-console.log('BEFORE ASYNC'); // CHECK ME - FIX ME
+
     (async () => {
         // include the forum link (nice purpose for cases where articles have same slug article link)
         let postNodeLink = ED_NODE_URL_PREFIX + post.nid;
         let postNodeDataJSON = await fetch(postNodeLink + IN_JSON_FORMAT);
         let postNodeData = await postNodeDataJSON.json();
         let postForumURL = postNodeData.field_forum_link[0].value;
-console.log('AFTER field_forum_link'); // CHECK ME - FIX ME
+
         // start creating the embed
         const embed = new Discord.MessageEmbed()
           .setColor(MAIN_BOT_COLOR)
@@ -523,7 +523,7 @@ console.log('AFTER field_forum_link'); // CHECK ME - FIX ME
           .setTitle('__' + title + '__')
           .setURL(EDN_ARTICLE_URL_PREFIX + post.slug)
           .setFooter(post.date, BOT_FOOTER_IMAGE);
-console.log('AFTER EMBED CREATED'); // CHECK ME - FIX ME
+
         // conditionally set image if there is one, else use a specific image
         let imageToCheck;
         let imageExists = true;
@@ -539,33 +539,36 @@ console.log('AFTER EMBED CREATED'); // CHECK ME - FIX ME
         } else imageExists = false;
         if (imageExists) embed.attachFiles([imageToCheck]);
         else embed.attachFiles([EDN_ARTICLE_NO_IMAGE]);
-console.log('AFTER IMAGE ATTACHED'); // CHECK ME - FIX ME
+
         // need to size differently for posts larger than 2048 characters
-        let archiveLink = '[Forum Post](' + postForumURL + ')';
+        let forumLink = '[Forum Post](' + postForumURL + ')';
         let description = (firstSentence.length > 0) ? ('**' + firstSentence + '**') : '';
         // continue with creating rest of description
-console.log('BEFORE PARSED FULL DESCRIPTION'); // CHECK ME - FIX ME
         description += (moreSentences.length > 0) ? moreSentences : '';
-        description += description ? ('\n\n**' + archiveLink + '**') : '';
-        const desc = [];
+        description += description ? ('\n\n**' + forumLink + '**') : '';
+        const desc = []; console.log('BEFORE ');
         if (description.length > DESCRIPTION_LENGTH) {
             // need to make sure that the first chunk ends at a double newline
             let newDescription = description.substring(0, DESCRIPTION_LENGTH + 4);
-            let firstChunkEnd = newDescription.lastIndexOf('\n\n');
+            let firstChunkEndTwoNewlines = newDescription.lastIndexOf('\n\n');
+            let firstChunkEndOneNewline = newDescription.lastIndexOf('\n');
+            let firstChunkEndSpace = newDescription.lastIndexOf(' ');
+            let firstChunkEnd = firstChunkEndTwoNewlines ? firstChunkEndTwoNewlines : (firstChunkEndOneNewline ? firstChunkEndOneNewline : (firstChunkEndSpace ? firstChunkEndSpace : DESCRIPTION_LENGTH));
+            let firstSpacing = firstChunkEndTwoNewlines ? 4 : (firstChunkEndOneNewline ? 2 : (firstChunkEndSpace ? 1 : 0));
             // fix the newDescription to match requirements, and get the extended description
             newDescription = description.substring(0, firstChunkEnd);
-            let extDescription = description.substring(firstChunkEnd + 4);
+            let extDescription = description.substring(firstChunkEnd + firstSpacing);
 
             desc.push(newDescription);
 
             // need to dynamically create the new fields to overcome description/field string length restrictions
             while (extDescription.length != 0) {
                 // similar chunking like in normal description
-                let newFieldValue = extDescription.substring(0, FIELD_VALUE_LENGTH + 4);
+                let newFieldValue = extDescription.substring(0, FIELD_VALUE_LENGTH + firstSpacing);
                 let iterationChunkEnd = newFieldValue.lastIndexOf('\n\n');
                 newFieldValue = extDescription.substring(0, iterationChunkEnd);
                 desc.push(newFieldValue);
-                extDescription = extDescription.substring(iterationChunkEnd, iterationChunkEnd + 4);
+                extDescription = extDescription.substring(iterationChunkEnd, iterationChunkEnd + firstSpacing);
             }
         } else desc.push(description);
 console.log('AFTER PARSED FULL DESCRIPTION'); // CHECK ME - FIX ME
