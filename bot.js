@@ -548,11 +548,11 @@ function createArticlePost(msg, post) {
         if (description.length > DESCRIPTION_LENGTH) {
             let firstChunkEnd = -1;
             let endStringTestIndex = 0;
-            while (firstChunkEnd <= 0 || endStringTestIndex < endStringTests.length) {
+            while (firstChunkEnd <= 0 && endStringTestIndex < endStringTests.length) {
                 let endString = endStringTests[endStringTestIndex];
                 // need to make sure that the first chunk ends at a double newline, single newline, space, or at max length
                 let newDescription = description.substring(0, DESCRIPTION_LENGTH + endString.length);
-                let firstChunkEnd = newDescription.lastIndexOf(endString);
+                firstChunkEnd = newDescription.lastIndexOf(endString);
 
                 // can't go further if firstChunkEnd, wasn't found
                 if (firstChunkEnd > 0) {/*
