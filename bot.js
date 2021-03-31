@@ -542,7 +542,7 @@ function createArticlePost(msg, post) {
         let description = (firstSentence.length > 0) ? ('**' + firstSentence + '**') : '';
         // continue with creating rest of description
         description += (moreSentences.length > 0) ? moreSentences : '';
-        description += description ? ('\n\n' + forumLink + '\n') : '\n'; // and ending newline is needed sometimes to cut the description correctly
+        description += description ? ('\n\n' + forumLink + '\n') : '\n'; // an ending newline is needed sometimes to cut the description correctly
         const desc = [];
         const endStringTests = ['\n\n', '\n'];
         if (description.length > DESCRIPTION_LENGTH) {
