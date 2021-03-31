@@ -548,7 +548,7 @@ function createArticlePost(msg, post) {
         description += description ? ('\n\n**' + forumLink + '**') : '';
         const desc = [];
         const endStringTests = ['\n\n', '\n', ' ', ''];
-        if (description.length > DESCRIPTION_LENGTH) {
+        if (description.length > DESCRIPTION_LENGTH) {/*
             let firstChunkEnd = -1;
             let endStringTestIndex = 0;
             while (firstChunkEnd <= 0 && endStringTestIndex < endStringTests.length) {
@@ -577,7 +577,8 @@ function createArticlePost(msg, post) {
                 }
 
                 endStringTestIndex++;
-            }
+            }*/
+desc.push('Description is "' + description.length + '" long, compared to MAX: '+ DESCRIPTION_LENGTH);
         } else desc.push(description);
 console.log('AFTER PARSED FULL DESCRIPTION'); // CHECK ME - FIX ME
         // conditionally set description if there is one
