@@ -255,6 +255,16 @@ let settings = {};
 
 // FUNCTIONS
 
+function logConnectedServers() {
+    console.log('Connected to the following servers:');
+    client.guilds.cache.forEach(server => {
+        let ownerId = server.ownerID;
+        let owner = ownerId ? syncGetOwnerUsername(ownerId) : null;
+        let ownerUsername = serverOwner ? (owner.username + '#' + owner.discriminator) : null;
+        console.log(`\t"${server.name}" (${server.id})` + (ownerUsername ? (' [Owner: ' + ownerUsername + ']'));
+    });
+}
+
 // returns the user from a mention
 function getUserFromMention(mention) {
     if (!mention) return false;
@@ -896,6 +906,9 @@ function checkFeed() {
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
+    
+    // show connected servers
+    logConnectedServers();
 
     // load settings in first
     loadSettings();
