@@ -555,7 +555,7 @@ function createArticlePost(msg, post) {
                 let firstChunkEnd = newDescription.lastIndexOf(endString);
 
                 // can't go further if firstChunkEnd, wasn't found
-                /*if (firstChunkEnd > 0) {
+                if (firstChunkEnd > 0) {/*
                     // fix the newDescription to match requirements, and get the extended description
                     newDescription = description.substring(0, firstChunkEnd);
                     let extDescription = description.substring(firstChunkEnd + endString.length);
@@ -570,9 +570,9 @@ function createArticlePost(msg, post) {
                         newFieldValue = extDescription.substring(0, iterationChunkEnd);
                         desc.push(newFieldValue);
                         extDescription = extDescription.substring(iterationChunkEnd, iterationChunkEnd + endString.length);
-                    }
-                }*/
-                desc.push(endStringTestIndex); // TESTING
+                    }*/ 
+desc.push(firstChunkEnd); // TESTING
+                }
 
                 endStringTestIndex++;
             }
