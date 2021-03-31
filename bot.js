@@ -545,7 +545,7 @@ function createArticlePost(msg, post) {
         description += description ? ('\n\n**' + forumLink + '**') : '';
         const desc = [];
         const endStringTests = ['\n\n', '\n', ' ', ''];
-        if (description.length > DESCRIPTION_LENGTH) {/*
+        if (description.length > DESCRIPTION_LENGTH) {
             let firstChunkEnd = -1;
             let endStringTestIndex = 0;
             while (firstChunkEnd <= 0 && endStringTestIndex < endStringTests.length) {
@@ -555,7 +555,7 @@ function createArticlePost(msg, post) {
                 let firstChunkEnd = newDescription.lastIndexOf(endString);
 
                 // can't go further if firstChunkEnd, wasn't found
-                if (firstChunkEnd > 0) {
+                /*if (firstChunkEnd > 0) {
                     // fix the newDescription to match requirements, and get the extended description
                     newDescription = description.substring(0, firstChunkEnd);
                     let extDescription = description.substring(firstChunkEnd + endString.length);
@@ -571,13 +571,13 @@ function createArticlePost(msg, post) {
                         desc.push(newFieldValue);
                         extDescription = extDescription.substring(iterationChunkEnd, iterationChunkEnd + endString.length);
                     }
-                }
+                }*/
+                desc.push(endStringTestIndex); // TESTING
 
                 endStringTestIndex++;
-            }*/
-desc.push('Description is "' + description.length + '" long, compared to MAX: '+ DESCRIPTION_LENGTH);
+            }
         } else desc.push(description);
-console.log('AFTER PARSED FULL DESCRIPTION'); // CHECK ME - FIX ME
+
         // conditionally set description if there is one
         embed.setDescription(desc[0]);
 
@@ -587,7 +587,7 @@ console.log('AFTER PARSED FULL DESCRIPTION'); // CHECK ME - FIX ME
                 embed.addField('\u200B', desc[i]);
             }
         }
-console.log('BEFORE SENDING TO SERVER'); // CHECK ME - FIX ME
+
         // send to all discord servers feed channels if not part of msg
         if (!msg) {
             // need to loop through all servers loaded in settings
