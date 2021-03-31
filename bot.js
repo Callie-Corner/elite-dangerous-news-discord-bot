@@ -538,13 +538,13 @@ function createArticlePost(msg, post) {
         else embed.attachFiles([EDN_ARTICLE_NO_IMAGE]);
 
         // need to size differently for posts larger than 2048 characters
-        let forumLink = '[Forum Post](' + postForumURL + ')';
+        let forumLink = '**[Forum Post](' + postForumURL + ')**';
         let description = (firstSentence.length > 0) ? ('**' + firstSentence + '**') : '';
         // continue with creating rest of description
         description += (moreSentences.length > 0) ? moreSentences : '';
-        description += description ? ('\n\n**' + forumLink + '**') : '';
+        description += description ? ('\n\n' + forumLink) : '';
         const desc = [];
-        const endStringTests = ['\n\n', '\n', ' ', ''];
+        const endStringTests = ['\n\n', '\n'];
         if (description.length > DESCRIPTION_LENGTH) {
             let firstChunkEnd = -1;
             let firstEndStringTestIndex = 0;
