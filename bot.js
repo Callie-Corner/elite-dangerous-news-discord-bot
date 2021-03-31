@@ -546,29 +546,37 @@ function createArticlePost(msg, post) {
         // continue with creating rest of description
         description += (moreSentences.length > 0) ? moreSentences : '';
         description += description ? ('\n\n**' + forumLink + '**') : '';
-        const desc = []; console.log('BEFORE ');
+        const desc = [];
+        const endStringTests = ['\n\n', '\n', ' ', ''];
         if (description.length > DESCRIPTION_LENGTH) {
-            // need to make sure that the first chunk ends at a double newline
-            let newDescription = description.substring(0, DESCRIPTION_LENGTH + 4);
-            let firstChunkEndTwoNewlines = newDescription.lastIndexOf('\n\n');
-            let firstChunkEndOneNewline = newDescription.lastIndexOf('\n');
-            let firstChunkEndSpace = newDescription.lastIndexOf(' ');
-            let firstChunkEnd = firstChunkEndTwoNewlines ? firstChunkEndTwoNewlines : (firstChunkEndOneNewline ? firstChunkEndOneNewline : (firstChunkEndSpace ? firstChunkEndSpace : DESCRIPTION_LENGTH));
-            let firstSpacing = firstChunkEndTwoNewlines ? 4 : (firstChunkEndOneNewline ? 2 : (firstChunkEndSpace ? 1 : 0));
-            // fix the newDescription to match requirements, and get the extended description
-            newDescription = description.substring(0, firstChunkEnd);
-            let extDescription = description.substring(firstChunkEnd + firstSpacing);
+            let firstChunkEnd = -1;
+            let endStringTestIndex = 0;
+            while (firstChunkEnd <= 0 && endStringTestIndex < endStringTests.length) {
+                let endString = endStringTests[endStringTestIndex];
+                // need to make sure that the first chunk ends at a double newline, single newline, space, or at max length
+                let newDescription = description.substring(0, DESCRIPTION_LENGTH + endString.length);
+                let firstChunkEnd = newDescription.lastIndexOf(endString);
 
-            desc.push(newDescription);
+                // can't go further if firstChunkEnd, wasn't found
+                if (firstChunkEnd > 0)
+                    // fix the newDescription to match requirements, and get the extended description
+                    newDescription = description.substring(0, firstChunkEnd);
+                    let extDescription = description.substring(firstChunkEnd + endString.length);
 
-            // need to dynamically create the new fields to overcome description/field string length restrictions
-            while (extDescription.length != 0) {
-                // similar chunking like in normal description
-                let newFieldValue = extDescription.substring(0, FIELD_VALUE_LENGTH + firstSpacing);
-                let iterationChunkEnd = newFieldValue.lastIndexOf('\n\n');
-                newFieldValue = extDescription.substring(0, iterationChunkEnd);
-                desc.push(newFieldValue);
-                extDescription = extDescription.substring(iterationChunkEnd, iterationChunkEnd + firstSpacing);
+                    desc.push(newDescription);
+
+                    // need to dynamically create the new fields to overcome description/field string length restrictions
+                    while (extDescription.length != 0) {
+                        // similar chunking like in normal description
+                        let newFieldValue = extDescription.substring(0, FIELD_VALUE_LENGTH + endString.length);
+                        let iterationChunkEnd = newFieldValue.lastIndexOf(endString);
+                        newFieldValue = extDescription.substring(0, iterationChunkEnd);
+                        desc.push(newFieldValue);
+                        extDescription = extDescription.substring(iterationChunkEnd, iterationChunkEnd + endString.length);
+                    }
+                }
+
+                endStringTestIndex++;
             }
         } else desc.push(description);
 console.log('AFTER PARSED FULL DESCRIPTION'); // CHECK ME - FIX ME
