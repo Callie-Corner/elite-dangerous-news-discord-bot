@@ -508,14 +508,14 @@ function createArticlePost(msg, post) {
     title = escapeMarkdown(title);
     firstSentence = convertToDiscord(firstSentence);
     moreSentences = convertToDiscord(moreSentences);
-
+console.log('BEFORE ASYNC'); // CHECK ME - FIX ME
     (async () => {
         // include the forum link (nice purpose for cases where articles have same slug article link)
         let postNodeLink = ED_NODE_URL_PREFIX + post.nid;
         let postNodeDataJSON = await fetch(postNodeLink + IN_JSON_FORMAT);
         let postNodeData = await postNodeDataJSON.json();
         let postForumURL = postNodeData.field_forum_link[0].value;
-        
+console.log('AFTER field_forum_link'); // CHECK ME - FIX ME
         // start creating the embed
         const embed = new Discord.MessageEmbed()
           .setColor(MAIN_BOT_COLOR)
@@ -523,7 +523,7 @@ function createArticlePost(msg, post) {
           .setTitle('__' + title + '__')
           .setURL(EDN_ARTICLE_URL_PREFIX + post.slug)
           .setFooter(post.date, BOT_FOOTER_IMAGE);
-
+console.log('AFTER EMBED CREATED'); // CHECK ME - FIX ME
         // conditionally set image if there is one, else use a specific image
         let imageToCheck;
         let imageExists = true;
@@ -539,11 +539,12 @@ function createArticlePost(msg, post) {
         } else imageExists = false;
         if (imageExists) embed.attachFiles([imageToCheck]);
         else embed.attachFiles([EDN_ARTICLE_NO_IMAGE]);
-        
+console.log('AFTER IMAGE ATTACHED'); // CHECK ME - FIX ME
         // need to size differently for posts larger than 2048 characters
         let archiveLink = '[Forum Post](' + postForumURL + ')';
         let description = (firstSentence.length > 0) ? ('**' + firstSentence + '**') : '';
         // continue with creating rest of description
+console.log('BEFORE PARSED FULL DESCRIPTION'); // CHECK ME - FIX ME
         description += (moreSentences.length > 0) ? moreSentences : '';
         description += description ? ('\n\n**' + archiveLink + '**') : '';
         const desc = [];
@@ -567,7 +568,7 @@ function createArticlePost(msg, post) {
                 extDescription = extDescription.substring(iterationChunkEnd, iterationChunkEnd + 4);
             }
         } else desc.push(description);
-
+console.log('AFTER PARSED FULL DESCRIPTION'); // CHECK ME - FIX ME
         // conditionally set description if there is one
         embed.setDescription(desc[0]);
 
@@ -577,7 +578,7 @@ function createArticlePost(msg, post) {
                 embed.addField('\u200B', desc[i]);
             }
         }
-
+console.log('BEFORE SENDING TO SERVER'); // CHECK ME - FIX ME
         // send to all discord servers feed channels if not part of msg
         if (!msg) {
             // need to loop through all servers loaded in settings
