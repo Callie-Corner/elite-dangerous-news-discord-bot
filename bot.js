@@ -171,24 +171,6 @@ const HTML_TO_TEXT = {
 
             builder.addInline(text);
         },
-        /*'customContainer': function (elem, walk, builder, formatOptions) {
-            const attribs = elem.attribs || {};
-            const aClass = (attribs.class)
-              ? he.decode(attribs.class, builder.options.decodeOptions)
-              : '';
-            // we only want it to get new lines if it is embed
-            if (aClass.includes('embed-media')) {
-                builder.openBlock({ leadingLineBreaks: formatOptions.lineBreaks || 1 });
-builder.addInline(`--- aClass = "${aClass}" ---`);
-                walk(elem.children, builder);
-                builder.closeBlock({ trailingLineBreaks: formatOptions.lineBreaks || 1 });
-            } else {
-                builder.openBlock({ leadingLineBreaks: 0 });
-builder.addInline(`--- aClass = "${aClass}" ---`);
-                walk(elem.children, builder);
-                builder.closeBlock({ trailingLineBreaks: 0 });
-            }
-        },*/
         'customHeading': function (elem, walk, builder, formatOptions) {
             let tag = formatOptions.tag;
             let tagStart = formatOptions.tagStart || (tag ? tag : '**__');
