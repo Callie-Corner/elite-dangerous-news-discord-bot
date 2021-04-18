@@ -177,13 +177,16 @@ const HTML_TO_TEXT = {
               ? he.decode(attribs.class, builder.options.decodeOptions)
               : '';
             // we only want it to get new lines if it is embed
-            //if (aClass.includes('embed-media')) {
-            //    builder.openBlock({ leadingLineBreaks: formatOptions.lineBreaks });
-            //    walk(elem.children, builder);
-            //    builder.closeBlock({ trailingLineBreaks: formatOptions.lineBreaks });
-            //} else {
+console.log(`aClass = ${aClass}`);
+            if (aClass.indexOf('embed-media') != -1) {
+                builder.openBlock({ leadingLineBreaks: formatOptions.lineBreaks });
                 walk(elem.children, builder);
-            //}
+                builder.closeBlock({ trailingLineBreaks: formatOptions.lineBreaks });
+            } else {
+                builder.openBlock({ leadingLineBreaks: 0 });
+                walk(elem.children, builder);
+                builder.closeBlock({ trailingLineBreaks: 0 });
+            }
         },
         'customHeading': function (elem, walk, builder, formatOptions) {
             let tag = formatOptions.tag;
