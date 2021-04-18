@@ -221,22 +221,22 @@ const HTML_TO_TEXT = {
                    options: { tag: UNDERLINE } }, // tag gets replaced after markdown escapes
             'h1': { format: 'customHeading',
                     options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
+                               leadingLineBreaks: 2, trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
             'h2': { format: 'customHeading',
                     options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
+                               leadingLineBreaks: 2, trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
             'h3': { format: 'customHeading',
                     options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
+                               leadingLineBreaks: 2, trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
             'h4': { format: 'customHeading',
                     options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
+                               leadingLineBreaks: 2, trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
             'h5': { format: 'customHeading',
                     options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
+                               leadingLineBreaks: 2, trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
             'h6': { format: 'customHeading',
                     options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2 } } // change 2 to 1, for single line breaks
+                               leadingLineBreaks: 2, trailingLineBreaks: 2 } } // change 2 to 1, for single line breaks
          }
 };
 
