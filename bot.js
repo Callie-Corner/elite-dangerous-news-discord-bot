@@ -179,12 +179,13 @@ const HTML_TO_TEXT = {
             // we only want it to get new lines if it is embed
             if (aClass.indexOf('embed-media') != -1) {
                 builder.openBlock({ leadingLineBreaks: formatOptions.lineBreaks || 1 });
-builder.addInline(`aClass = "${aClass}" ---`);
+console.log(typeof(aClass));
+builder.addInline(`--- aClass = "${aClass}" ---`);
                 walk(elem.children, builder);
                 builder.closeBlock({ trailingLineBreaks: formatOptions.lineBreaks || 1 });
             } else {
                 builder.openBlock({ leadingLineBreaks: 0 });
-builder.addInline(`aClass = "${aClass}" ---`);
+builder.addInline(`--- aClass = "${aClass}" ---`);
                 walk(elem.children, builder);
                 builder.closeBlock({ trailingLineBreaks: 0 });
             }
