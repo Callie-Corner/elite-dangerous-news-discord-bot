@@ -169,17 +169,18 @@ const HTML_TO_TEXT = {
                 ? '{[' + src + '](' + src + ')}'
                 : '{[' + title + '](' + src + ')}';
 
+            builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 1 });
             builder.addInline(text);
+            builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 1 });
         },
-        'customContainer': function (elem, walk, builder, formatOptions) {
+        /*'customContainer': function (elem, walk, builder, formatOptions) {
             const attribs = elem.attribs || {};
             const aClass = (attribs.class)
               ? he.decode(attribs.class, builder.options.decodeOptions)
               : '';
             // we only want it to get new lines if it is embed
-            if (aClass.indexOf('embed-media') != -1) {
+            if (aClass.includes('embed-media')) {
                 builder.openBlock({ leadingLineBreaks: formatOptions.lineBreaks || 1 });
-console.log(typeof(aClass));
 builder.addInline(`--- aClass = "${aClass}" ---`);
                 walk(elem.children, builder);
                 builder.closeBlock({ trailingLineBreaks: formatOptions.lineBreaks || 1 });
@@ -189,7 +190,7 @@ builder.addInline(`--- aClass = "${aClass}" ---`);
                 walk(elem.children, builder);
                 builder.closeBlock({ trailingLineBreaks: 0 });
             }
-        },
+        },*/
         'customHeading': function (elem, walk, builder, formatOptions) {
             let tag = formatOptions.tag;
             let tagStart = formatOptions.tagStart || (tag ? tag : '**__');
@@ -209,8 +210,6 @@ builder.addInline(`--- aClass = "${aClass}" ---`);
     },
     tags: { 'br': { format: 'customLineBreaks',
                     options: { trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
-            'div': { format: 'customContainer',
-                     options: { lineBreaks: 1 } }, // adds linebreak to top and bottom; change 2 to 1, for single line breaks
             'p': { options: { trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
             'a': { format: 'customLink' },
             'img': { format: 'customImage' },
