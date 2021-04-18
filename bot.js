@@ -177,23 +177,29 @@ const HTML_TO_TEXT = {
               ? he.decode(attribs.class, builder.options.decodeOptions)
               : '';
             // we only want it to get new lines if it is embed
-            if (aClass.includes('embed-media')) {
-                builder.openBlock({ leadingLineBreaks: formatOptions.lineBreaks });
+            //if (aClass.includes('embed-media')) {
+            //    builder.openBlock({ leadingLineBreaks: formatOptions.lineBreaks });
+            //    walk(elem.children, builder);
+            //    builder.closeBlock({ trailingLineBreaks: formatOptions.lineBreaks });
+            //} else {
                 walk(elem.children, builder);
-                builder.closeBlock({ trailingLineBreaks: formatOptions.lineBreaks });
-            } else {
-                walk(elem.children, builder);
-            }
+            //}
         },
         'customHeading': function (elem, walk, builder, formatOptions) {
             let tag = formatOptions.tag;
             let tagStart = formatOptions.tagStart || (tag ? tag : '**__');
             let tagEnd = formatOptions.tagEnd || (tag ? tag : '__**');
-            builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 0 });
+            builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 1 });
             builder.addInline(tagStart);
-            walk(elem.children, builder);
+            if (formatOptions.uppercase !== false) {
+                builder.pushWordTransform(str => str.toUpperCase());
+                walk(elem.children, builder);
+                builder.popWordTransform();
+            } else {
+                walk(elem.children, builder);
+            }
             builder.addInline(tagEnd);
-            builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 0 });
+            builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 1 });
         }
     },
     tags: { 'br': { format: 'customLineBreaks',
