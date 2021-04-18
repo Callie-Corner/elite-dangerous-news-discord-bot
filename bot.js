@@ -169,7 +169,7 @@ const HTML_TO_TEXT = {
                 ? '{[' + src + '](' + src + ')}'
                 : '{[' + title + '](' + src + ')}';
 
-            builder.addInline('\n'+text+'\n');
+            builder.addInline(text);
         },
         /*'customContainer': function (elem, walk, builder, formatOptions) {
             const attribs = elem.attribs || {};
@@ -193,7 +193,7 @@ builder.addInline(`--- aClass = "${aClass}" ---`);
             let tag = formatOptions.tag;
             let tagStart = formatOptions.tagStart || (tag ? tag : '**__');
             let tagEnd = formatOptions.tagEnd || (tag ? tag : '__**');
-            builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 1 });
+            builder.openBlock(formatOptions.leadingLineBreaks || 1);
             builder.addInline(tagStart);
             if (formatOptions.uppercase !== false) {
                 builder.pushWordTransform(str => str.toUpperCase());
@@ -203,7 +203,7 @@ builder.addInline(`--- aClass = "${aClass}" ---`);
                 walk(elem.children, builder);
             }
             builder.addInline(tagEnd);
-            builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 1 });
+            builder.closeBlock(formatOptions.trailingLineBreaks || 1);
         }
     },
     tags: { 'br': { format: 'customLineBreaks',
