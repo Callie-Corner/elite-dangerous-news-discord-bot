@@ -522,7 +522,7 @@ function createArticlePost(msg, post) {
       .setAuthor(moment(new Date(post.date)).format('DD MMM YYYY').toUpperCase())
       .setTitle('__' + title + '__')
       .setURL(EDN_ARTICLE_URL_PREFIX + post.slug)
-      .setFooter(post.date, BOT_FOOTER_IMAGE);
+      .setFooter(new Date(post.date).toUTCString(), BOT_FOOTER_IMAGE);
 
     (async () => {
         // conditionally set image if there is one, else use a specific image
