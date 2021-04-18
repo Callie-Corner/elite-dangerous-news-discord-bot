@@ -177,13 +177,14 @@ const HTML_TO_TEXT = {
               ? he.decode(attribs.class, builder.options.decodeOptions)
               : '';
             // we only want it to get new lines if it is embed
-console.log(`aClass = ${aClass}`);
             if (aClass.indexOf('embed-media') != -1) {
-                builder.openBlock({ leadingLineBreaks: formatOptions.lineBreaks });
+                builder.openBlock({ leadingLineBreaks: formatOptions.lineBreaks || 1 });
+builder.addInline(`aClass = "${aClass}" ---`);
                 walk(elem.children, builder);
-                builder.closeBlock({ trailingLineBreaks: formatOptions.lineBreaks });
+                builder.closeBlock({ trailingLineBreaks: formatOptions.lineBreaks || 1 });
             } else {
                 builder.openBlock({ leadingLineBreaks: 0 });
+builder.addInline(`aClass = "${aClass}" ---`);
                 walk(elem.children, builder);
                 builder.closeBlock({ trailingLineBreaks: 0 });
             }
