@@ -1,6 +1,6 @@
 {
   "name": "elite-dangerous-news-discord-bot",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Just a bot for getting Elite Dangerous News whenever a new post comes out!",
   "main": "bot.js",
   "dependencies": {
