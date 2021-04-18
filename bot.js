@@ -169,9 +169,7 @@ const HTML_TO_TEXT = {
                 ? '{[' + src + '](' + src + ')}'
                 : '{[' + title + '](' + src + ')}';
 
-            builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 1 });
-            builder.addInline(text);
-            builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 1 });
+            builder.addInline('\n'+text+'\n');
         },
         /*'customContainer': function (elem, walk, builder, formatOptions) {
             const attribs = elem.attribs || {};
