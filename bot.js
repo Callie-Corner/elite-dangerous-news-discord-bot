@@ -16,8 +16,8 @@ const client = new Discord.Client();
 // WEBSITES
 const AUTHOR_URL = 'https://thealiendrew.github.io';
 const TWITTER_URL = 'https://twitter.com/Alien_Drew';
-const PATREON_URL = 'https://www.patreon.com/aliendrew';
-const KOFI_URL = 'https://ko-fi.com/aliendrew';
+const PATREON_URL = 'https://www.patreon.com/Andrew_J_Larson';
+const KOFI_URL = 'https://ko-fi.com/Andrew_J_Larson';
 
 // STATUS TYPES
 const PLAY = 'PLAYING';
@@ -44,7 +44,7 @@ const SAVE_POSTFIX = '.guild';
 
 const IN_JSON_FORMAT = '?_format=json';
 
-const GITHUB_REPO_URL = 'https://github.com/TheAlienDrew/elite-dangerous-news-discord-bot';
+const GITHUB_REPO_URL = 'https://github.com/Andrew-J-Larson/elite-dangerous-news-discord-bot';
 const BOT_NAME = 'Elite Dangerous News';
 const DEFAULT_PREFIX = 'edn';
 const PRESENCE_NAME = `@${BOT_NAME} help | for commands`;
@@ -58,7 +58,7 @@ const ED_NODE_URL_PREFIX = ED_BACKEND_URL + 'node/';
 const EDN_ARTICLE_URL_PREFIX = ED_FRONTEND_URL + 'news/article/';
 const EDN_ARTICLE_IMG_URL_PREFIX = 'https://cms.' + ED_DOMAIN;
 const EDN_JSON_URL = ED_BACKEND_URL + 'api/news' + IN_JSON_FORMAT; // NO RSS - because there is no official RSS endpoint
-const BOT_IMAGES_URL_PREFIX = 'https://raw.githubusercontent.com/TheAlienDrew/elite-dangerous-news-discord-bot/main/images/'
+const BOT_IMAGES_URL_PREFIX = 'https://raw.githubusercontent.com/Andrew-J-Larson/elite-dangerous-news-discord-bot/main/images/'
 const EDN_IMAGES_URL_PREFIX = BOT_IMAGES_URL_PREFIX + 'Elite-Dangerous-Logo/';
 const EDN_LOGO_SILVER_THUMB = EDN_IMAGES_URL_PREFIX + 'Elite-Dangerous_Silver_Thumbnail.png';
 const EDN_LOGO_WHITE_BOT_IMAGE = EDN_IMAGES_URL_PREFIX + 'Elite-Dangerous_White_Bot_Picture.png';
@@ -107,14 +107,14 @@ const HTML_TO_TEXT = {
             builder.addInline(tag);
         },
         'customLink': function (elem, walk, builder, formatOptions) {
-            function getHref () {
+            function getHref() {
                 if (formatOptions.ignoreHref) { return ''; }
                 if (!elem.attribs || !elem.attribs.href) { return ''; }
                 let href = elem.attribs.href.replace(/^mailto:/, '');
                 if (formatOptions.noAnchorUrl && href[0] === '#') { return ''; }
                 href = (formatOptions.baseUrl && href[0] === '/')
-                  ? formatOptions.baseUrl + href
-                  : href;
+                    ? formatOptions.baseUrl + href
+                    : href;
                 return he.decode(href, builder.options.decodeOptions);
             }
             const href = getHref();
@@ -123,10 +123,10 @@ const HTML_TO_TEXT = {
             } else {
                 let text = '';
                 builder.pushWordTransform(
-                  str => {
-                    if (str) { text += str; }
-                    return str;
-                  }
+                    str => {
+                        if (str) { text += str; }
+                        return str;
+                    }
                 );
 
                 builder.addInline('[', { noWordTransform: true });
@@ -138,36 +138,36 @@ const HTML_TO_TEXT = {
         'customImage': function (elem, walk, builder, formatOptions) {
             const attribs = elem.attribs || {};
             const alt = (attribs.alt)
-              ? he.decode(attribs.alt, builder.options.decodeOptions)
-              : '';
+                ? he.decode(attribs.alt, builder.options.decodeOptions)
+                : '';
             const src = (!attribs.src)
-              ? ''
-              : (formatOptions.baseUrl && attribs.src.indexOf('/') === 0)
-                ? formatOptions.baseUrl + attribs.src
-                : attribs.src;
+                ? ''
+                : (formatOptions.baseUrl && attribs.src.indexOf('/') === 0)
+                    ? formatOptions.baseUrl + attribs.src
+                    : attribs.src;
             const text = (!src)
-              ? alt
-              : (!alt)
-                ? '[[' + src + '](' + src + ')]'
-                : '[[' + alt + '](' + src + ')]';
+                ? alt
+                : (!alt)
+                    ? '[[' + src + '](' + src + ')]'
+                    : '[[' + alt + '](' + src + ')]';
 
             builder.addInline(text);
         },
         'customIframe': function (elem, walk, builder, formatOptions) {
             const attribs = elem.attribs || {};
             const title = (attribs.title)
-              ? he.decode(attribs.title, builder.options.decodeOptions)
-              : '';
+                ? he.decode(attribs.title, builder.options.decodeOptions)
+                : '';
             const src = (!attribs.src)
-              ? ''
-              : (formatOptions.baseUrl && attribs.src.indexOf('/') === 0)
-                ? formatOptions.baseUrl + attribs.src
-                : attribs.src;
+                ? ''
+                : (formatOptions.baseUrl && attribs.src.indexOf('/') === 0)
+                    ? formatOptions.baseUrl + attribs.src
+                    : attribs.src;
             const text = (!src)
-              ? title
-              : (!title)
-                ? '{[' + src + '](' + src + ')}'
-                : '{[' + title + '](' + src + ')}';
+                ? title
+                : (!title)
+                    ? '{[' + src + '](' + src + ')}'
+                    : '{[' + title + '](' + src + ')}';
 
             builder.addInline(text);
         },
@@ -188,53 +188,96 @@ const HTML_TO_TEXT = {
             builder.closeBlock(formatOptions.trailingLineBreaks || 1);
         }
     },
-    tags: { 'br': { format: 'customLineBreaks',
-                    options: { trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
-            'p': { options: { trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
-            'a': { format: 'customLink' },
-            'img': { format: 'customImage' },
-            'iframe': { format: 'customIframe' },
-            'ul': { options: { itemPrefix: ' • ' } },
-            'em': { format: 'customItalic',
-                    options: { tag: ITALIC } }, // tag gets replaced after markdown escapes
-            'i': { format: 'customItalic',
-                   options: { tag: ITALIC } }, // tag gets replaced after markdown escapes
-            'strong': { format: 'customBold',
-                        options: { tag: BOLD } }, // tag gets replaced after markdown escapes
-            'b': { format: 'customBold',
-                   options: { tag: BOLD } }, // tag gets replaced after markdown escapes
-            'strike': { format: 'customStrikethrough',
-                   options: { tag: STRIKETHROUGH } }, // tag gets replaced after markdown escapes
-            's': { format: 'customStrikethrough',
-                   options: { tag: STRIKETHROUGH } }, // tag gets replaced after markdown escapes
-            'u': { format: 'customUnderline',
-                   options: { tag: UNDERLINE } }, // tag gets replaced after markdown escapes
-            'h1': { format: 'customHeading',
-                    options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2, trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
-            'h2': { format: 'customHeading',
-                    options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2, trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
-            'h3': { format: 'customHeading',
-                    options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2, trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
-            'h4': { format: 'customHeading',
-                    options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2, trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
-            'h5': { format: 'customHeading',
-                    options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2, trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
-            'h6': { format: 'customHeading',
-                    options: { tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
-                               leadingLineBreaks: 2, trailingLineBreaks: 2 } } // change 2 to 1, for single line breaks
-         }
+    tags: {
+        'br': {
+            format: 'customLineBreaks',
+            options: { trailingLineBreaks: 2 }
+        }, // change 2 to 1, for single line breaks
+        'p': { options: { trailingLineBreaks: 2 } }, // change 2 to 1, for single line breaks
+        'a': { format: 'customLink' },
+        'img': { format: 'customImage' },
+        'iframe': { format: 'customIframe' },
+        'ul': { options: { itemPrefix: ' • ' } },
+        'em': {
+            format: 'customItalic',
+            options: { tag: ITALIC }
+        }, // tag gets replaced after markdown escapes
+        'i': {
+            format: 'customItalic',
+            options: { tag: ITALIC }
+        }, // tag gets replaced after markdown escapes
+        'strong': {
+            format: 'customBold',
+            options: { tag: BOLD }
+        }, // tag gets replaced after markdown escapes
+        'b': {
+            format: 'customBold',
+            options: { tag: BOLD }
+        }, // tag gets replaced after markdown escapes
+        'strike': {
+            format: 'customStrikethrough',
+            options: { tag: STRIKETHROUGH }
+        }, // tag gets replaced after markdown escapes
+        's': {
+            format: 'customStrikethrough',
+            options: { tag: STRIKETHROUGH }
+        }, // tag gets replaced after markdown escapes
+        'u': {
+            format: 'customUnderline',
+            options: { tag: UNDERLINE }
+        }, // tag gets replaced after markdown escapes
+        'h1': {
+            format: 'customHeading',
+            options: {
+                tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
+                leadingLineBreaks: 2, trailingLineBreaks: 2
+            }
+        }, // change 2 to 1, for single line breaks
+        'h2': {
+            format: 'customHeading',
+            options: {
+                tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
+                leadingLineBreaks: 2, trailingLineBreaks: 2
+            }
+        }, // change 2 to 1, for single line breaks
+        'h3': {
+            format: 'customHeading',
+            options: {
+                tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
+                leadingLineBreaks: 2, trailingLineBreaks: 2
+            }
+        }, // change 2 to 1, for single line breaks
+        'h4': {
+            format: 'customHeading',
+            options: {
+                tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
+                leadingLineBreaks: 2, trailingLineBreaks: 2
+            }
+        }, // change 2 to 1, for single line breaks
+        'h5': {
+            format: 'customHeading',
+            options: {
+                tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
+                leadingLineBreaks: 2, trailingLineBreaks: 2
+            }
+        }, // change 2 to 1, for single line breaks
+        'h6': {
+            format: 'customHeading',
+            options: {
+                tagStart: HEADING_START, tagEnd: HEADING_END, // tags gets replaced after markdown escapes
+                leadingLineBreaks: 2, trailingLineBreaks: 2
+            }
+        } // change 2 to 1, for single line breaks
+    }
 };
 
 const NEWEST_POST_FILE = './newest-post.txt';
 
-const DEFAULT_SETTINGS = {prefix: DEFAULT_PREFIX,
-                          feedChannel: null,
-                          feedRole: null};
+const DEFAULT_SETTINGS = {
+    prefix: DEFAULT_PREFIX,
+    feedChannel: null,
+    feedRole: null
+};
 
 // BOT VARIABLES
 
@@ -288,10 +331,10 @@ function getChannelFromMention(mention) {
 // returns the role id from role mention
 function getRoleFromMention(mention) {
     if (!mention) return false;
-    
+
     if (mention.startsWith('<@&') && mention.endsWith('>')) {
         mention = mention.slice(3, -1);
-        
+
         return mention;
     }
 }
@@ -307,11 +350,11 @@ function escapeMarkdown(text) {
 function convertToDiscord(text) {
     let escaped = escapeMarkdown(text);
     let converted = escaped.replace(new RegExp(ITALIC, 'g'), '*')
-                           .replace(new RegExp(BOLD, 'g'), '**')
-                           .replace(new RegExp(STRIKETHROUGH, 'g'), '~~')
-                           .replace(new RegExp(UNDERLINE, 'g'), '__')
-                           .replace(new RegExp(HEADING_START, 'g'), '**__')
-                           .replace(new RegExp(HEADING_END, 'g'), '__**');
+        .replace(new RegExp(BOLD, 'g'), '**')
+        .replace(new RegExp(STRIKETHROUGH, 'g'), '~~')
+        .replace(new RegExp(UNDERLINE, 'g'), '__')
+        .replace(new RegExp(HEADING_START, 'g'), '**__')
+        .replace(new RegExp(HEADING_END, 'g'), '__**');
     return converted;
 }
 
@@ -325,7 +368,7 @@ function loadSettings() {
     if (!fs.existsSync(SERVER_SAVE_DIR)) {
         try {
             fs.mkdirSync(SERVER_SAVE_DIR);
-        } catch(err) {
+        } catch (err) {
             serversFolderAccess = false;
             console.error("Couldn't create `servers` folder to store server settings.");
         }
@@ -357,7 +400,7 @@ function loadSettings() {
                             // loop through lines until correct setting is found or until end of file
                             let keys = Object.keys(settings[serverId]);
                             console.log((serverGuild.name ? ('"' + serverGuild.name + '" (' + serverId + ')') : serverId) + ':');
-                            data.toString().split('\n').forEach(function(line, index, arr) {
+                            data.toString().split('\n').forEach(function (line, index, arr) {
                                 if (index === arr.length - 1 && line === "") return;
                                 console.log('\t' + index + ' ' + line);
 
@@ -383,7 +426,7 @@ function loadSettings() {
                     }
                 }
             });
-        } catch(err) {
+        } catch (err) {
             console.log("Couldn't access the servers folder, or one or more server save files: " + err);
         }
     }
@@ -398,7 +441,7 @@ function deleteSettings(serverId) {
         try {
             delete settings[serverId];
             console.log(`${serverId}: Deleted server settings from object.`);
-        } catch(err) {
+        } catch (err) {
             console.error(`${serverId}: Couldn't delete server settings from object. Error: ` + err);
         }
     }
@@ -408,7 +451,7 @@ function deleteSettings(serverId) {
         try {
             fs.unlinkSync(serverSaveFile);
             console.log(`${serverSaveFile}: Deleted server settings file.`);
-        } catch(err) {
+        } catch (err) {
             console.error(`${serverSaveFile}: Couldn't delete server settings file. Error: ` + err);
         }
     }
@@ -436,7 +479,7 @@ function saveSettings(serverId) {
         try {
             fs.writeFileSync(SERVER_SAVE_DIR + serverId + SAVE_POSTFIX, saveString);
             console.log(`${serverId}: Settings saved successfully.`);
-        } catch(err) {
+        } catch (err) {
             console.error(`${serverId}: Couldn't save settings. Error: ` + err);
         }
     } else if (!serverId) { // should never get beyond this point
@@ -502,8 +545,8 @@ function setPrefix(msg, prefix) {
 function createArticlePost(msg, post) {
     let serverId = msg ? (msg.guild ? msg.guild.id : null) : null;
     // get the right and formatted information for title and body
-    let title = (post.title.replace(/\s/g,'').length > 0) ? htmlToText(post.title, {wordwrap: null}).replace(/\r/g,'').trim() : null;
-    let body = htmlToText(post.body.replace(/\r?\n|\r/g,''), HTML_TO_TEXT).trim();
+    let title = (post.title.replace(/\s/g, '').length > 0) ? htmlToText(post.title, { wordwrap: null }).replace(/\r/g, '').trim() : null;
+    let body = htmlToText(post.body.replace(/\r?\n|\r/g, ''), HTML_TO_TEXT).trim();
     let sentences = body.split('\n');
     // sometimes the title is in the body
     if (!title) {
@@ -524,11 +567,11 @@ function createArticlePost(msg, post) {
 
     // start creating the embed
     const embed = new Discord.MessageEmbed()
-      .setColor(MAIN_BOT_COLOR)
-      .setAuthor(moment(new Date(post.date)).format('DD MMM YYYY').toUpperCase())
-      .setTitle('__' + title + '__')
-      .setURL(EDN_ARTICLE_URL_PREFIX + post.slug)
-      .setFooter(new Date(post.date).toUTCString(), BOT_FOOTER_IMAGE);
+        .setColor(MAIN_BOT_COLOR)
+        .setAuthor(moment(new Date(post.date)).format('DD MMM YYYY').toUpperCase())
+        .setTitle('__' + title + '__')
+        .setURL(EDN_ARTICLE_URL_PREFIX + post.slug)
+        .setFooter(new Date(post.date).toUTCString(), BOT_FOOTER_IMAGE);
 
     (async () => {
         // conditionally set image if there is one, else use a specific image
@@ -540,7 +583,7 @@ function createArticlePost(msg, post) {
             // only set the image if the file is online and working
             await fetch(imageToCheck).then((response) => {
                 if (response.status >= 400 && response.status < 600) {
-                  imageExists = false;
+                    imageExists = false;
                 }
             });
         } else imageExists = false;
@@ -621,7 +664,7 @@ function createArticlePost(msg, post) {
                     let channel = server.channels.cache.get(settings[serverId].feedChannel);
                     let mentionRole = settings[serverId].feedRole ? server.roles.cache.get(settings[serverId].feedRole).toString() : null;
                     // need to limit posting to avoid ratelimiting
-                    setTimeout(function() {
+                    setTimeout(function () {
                         // optionally included mention role
                         if (mentionRole) {
                             channel.send(mentionRole, embed).catch(err => {
@@ -649,7 +692,7 @@ function createArticlePost(msg, post) {
                 return false;
             });
         }
-        
+
         return true;
     })();
 }
@@ -664,7 +707,7 @@ async function fetchEdnArticles() {
     for (let testBodyIndex = allNews.length - 1; testBodyIndex >= 0; testBodyIndex--) {
         if (allNews[testBodyIndex].body.trim() == '') allNews.splice(testBodyIndex, 1);
     }
-    
+
     return allNews;
 }
 
@@ -720,7 +763,7 @@ function getEdnPosts(msg, postNode) {
         // either start posting matching articles or a note about there being none
         if (matched) {
             let postIndex = 0;
-            
+
             // need to either get a chunch of same date posts, or get posts after matched post
             let noErrors = true;
             if (checkDate) {
@@ -729,7 +772,7 @@ function getEdnPosts(msg, postNode) {
                     // must not take a post that has no description
                     let currentPost = allNews[k];
                     if (currentPost.body.trim() != '') {
-                        setTimeout(function() {
+                        setTimeout(function () {
                             if (!createArticlePost(msg, currentPost)) noErrors = false;
                         }, ALL_POST_DELAY * postIndex);
 
@@ -742,7 +785,7 @@ function getEdnPosts(msg, postNode) {
                     // must not take a post that has no description
                     let currentPost = allNews[k];
                     if (currentPost.body.trim() != '') {
-                        setTimeout(function() {
+                        setTimeout(function () {
                             if (!createArticlePost(msg, currentPost)) noErrors = false;
                         }, ALL_POST_DELAY * postIndex);
 
@@ -810,11 +853,11 @@ function setFeedRole(msg, roleArgs) {
             } else if (msg.guild.roles.cache.get(roleId).mentionable) {
                 // checks if the role itself is mentionable by everyone, then sets role
                 settings[serverId].feedRole = roleId;
-                msgLocate(msg).send('Automatic feed role mention changed to ' + msg.guild.roles.cache.get(roleId).toString() + '.', {'allowedMentions': { 'users' : []}});
+                msgLocate(msg).send('Automatic feed role mention changed to ' + msg.guild.roles.cache.get(roleId).toString() + '.', { 'allowedMentions': { 'users': [] } });
             } else if (botHasEveryonePermission) {
                 // checks if the bot has permissions to mention everyone, then sets role
                 settings[serverId].feedRole = roleId;
-                msgLocate(msg).send('Automatic feed role mention changed to ' + msg.guild.roles.cache.get(roleId).toString() + '.', {'allowedMentions': { 'users' : []}});
+                msgLocate(msg).send('Automatic feed role mention changed to ' + msg.guild.roles.cache.get(roleId).toString() + '.', { 'allowedMentions': { 'users': [] } });
             } else if (!botHasEveryonePermission && (roleId == msg.guild.roles.cache.everyone.id || roleId == msg.guild.roles.cache.here.id)) {
                 // throw error when bot can't mention @everyone or @here
                 msgLocate(msg).send("Sorry, but I don't have the permission to mention everyone/here in the currently set channel.");
@@ -908,7 +951,7 @@ function checkFeed() {
             filePostNode = data.toString().replace(/\n$/, '');
             // check to make sure we actually have a new post
             if (checkPostNode == filePostNode) newPostAvailable = false;
-        } catch(err) {
+        } catch (err) {
             console.log('Feed file will be initialized.');
         }
 
@@ -921,7 +964,7 @@ function checkFeed() {
                 // write to file
                 try {
                     fs.writeFileSync(NEWEST_POST_FILE, checkPostNode + '\n');
-                } catch(err) {
+                } catch (err) {
                     console.error(err)
                 }
             }
@@ -935,7 +978,7 @@ function checkFeed() {
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    
+
     // show connected servers
     let numOfServers = logConnectedServers();
     if (numOfServers) console.log(`Connected to ${numOfServers} servers in total.`);
@@ -953,10 +996,10 @@ client.once('ready', () => {
             url: GITHUB_REPO_URL
         }
     });
-    
+
     // start interval checking of the JSON feed to update channel
     checkFeed();
-    setInterval(function() {
+    setInterval(function () {
         checkFeed();
     }, FEED_INTERVAL_SPEED);
     console.log(`Feed checker interval started.`);
@@ -1012,7 +1055,7 @@ client.on('message', msg => {
         if (hasPrefix || hasMention) {
             // useful information for commands, for the mention the 3 is for the '<@!>' characters
             const args = hasPrefix ? msg.content.slice(settings[serverId].prefix.length).trim().split(/ +/g)
-                                   : msg.content.slice(mentioned.id.length + 4).trim().split(/ +/g);  
+                : msg.content.slice(mentioned.id.length + 4).trim().split(/ +/g);
             const command = args.shift().toLowerCase();
 
             // <===== COMMANDS HERE =====> //
@@ -1021,31 +1064,31 @@ client.on('message', msg => {
             if (command === 'help') {
                 console.log(`${serverId}: Executed help command`);
                 const embed = new Discord.MessageEmbed()
-                  .setColor(MAIN_BOT_COLOR)
-                  .setAuthor(BOT_NAME + ' v' + version)
-                  .setTitle('__Commands__')
-                  .setDescription(`To run a command: \`${settings[serverId].prefix} <command>\`\n\n` +
-                    `**help** - Brings up this help page\n` +
-                    `**ping** - Gets the ping time in milliseconds\n` +
-                    `**newest** or **latest** - Gets the latest post(s)\n` +
-                    `**top** - Works like newest, but only grabs the single most recent news post\n` +
-                    `**feedinfo** - Shows if the feed is on, what channel it's set to, and if a role is set to be mentioned`)
-                  .setThumbnail(BOT_THUMBNAIL_IMAGE)
-                  .setFooter(`Mention a mod/admin/owner if there's any problems, or tweet the bot creator`, BOT_FOOTER_IMAGE);
+                    .setColor(MAIN_BOT_COLOR)
+                    .setAuthor(BOT_NAME + ' v' + version)
+                    .setTitle('__Commands__')
+                    .setDescription(`To run a command: \`${settings[serverId].prefix} <command>\`\n\n` +
+                        `**help** - Brings up this help page\n` +
+                        `**ping** - Gets the ping time in milliseconds\n` +
+                        `**newest** or **latest** - Gets the latest post(s)\n` +
+                        `**top** - Works like newest, but only grabs the single most recent news post\n` +
+                        `**feedinfo** - Shows if the feed is on, what channel it's set to, and if a role is set to be mentioned`)
+                    .setThumbnail(BOT_THUMBNAIL_IMAGE)
+                    .setFooter(`Mention a mod/admin/owner if there's any problems, or tweet the bot creator`, BOT_FOOTER_IMAGE);
 
                 // need to conditionally show admin commands            
                 if (msg.member.hasPermission(ADMIN)) {
                     embed.addField('__Admin Commands__',
-                      `**feedchannel** [name / id / mention] - Sets the feed channel or toggles it off, and no arguments uses the channel command was sent in\n` +
-                      `**feedrole** [name (case sensitive) / id / mention] - Sets the role to mention or toggles it off, no arguments turns off the role mention\n` +
-                      `**prefix** [no-whitespace-string] - Sets the prefix for the bot, and no arguments shows the current prefix`);
+                        `**feedchannel** [name / id / mention] - Sets the feed channel or toggles it off, and no arguments uses the channel command was sent in\n` +
+                        `**feedrole** [name (case sensitive) / id / mention] - Sets the role to mention or toggles it off, no arguments turns off the role mention\n` +
+                        `**prefix** [no-whitespace-string] - Sets the prefix for the bot, and no arguments shows the current prefix`);
                 }
 
                 // need this field added last
                 embed.addField(`__Bot Information__`,
-                  `Creator: **[${author}](${AUTHOR_URL})** ([Twitter](${TWITTER_URL}))\n` +
-                  `Source Code: **[GitHub Repo](${GITHUB_REPO_URL})** (${license})\n` +
-                  `Donate: **[Patreon](${PATREON_URL})** | **[Ko-fi](${KOFI_URL})**`);
+                    `Creator: **[${author}](${AUTHOR_URL})** ([Twitter](${TWITTER_URL}))\n` +
+                    `Source Code: **[GitHub Repo](${GITHUB_REPO_URL})** (${license})\n` +
+                    `Donate: **[Patreon](${PATREON_URL})** | **[Ko-fi](${KOFI_URL})**`);
 
                 msgLocate(msg).send(embed);
             }
@@ -1053,8 +1096,8 @@ client.on('message', msg => {
             // PING
             else if (command === 'ping') {
                 console.log(`${serverId}: Executed ping command`);
-                msgLocate(msg).send("Pinging...").then((msg)=> {
-                    msg.edit("Still pinging...").then((msg)=> {
+                msgLocate(msg).send("Pinging...").then((msg) => {
+                    msg.edit("Still pinging...").then((msg) => {
                         msg.edit("Pong! `" + (msg.editedTimestamp - msg.createdTimestamp) + "ms`");
                     })
                 })
@@ -1079,10 +1122,10 @@ client.on('message', msg => {
                 console.log(`${serverId}: Executed feedinfo command`);
                 msgLocate(msg).send(
                     settings[serverId].feedChannel
-                    ? ('The feed is currently set to send new posts to '
-                      + msg.guild.channels.cache.get(settings[serverId].feedChannel).toString()
-                      + (settings[serverId].feedRole ? (', and mention the ' + msg.guild.roles.cache.get(settings[serverId].feedRole).toString() + ' role') : '') + '.')
-                    : 'The feed is currently turned off.', settings[serverId].feedRole ? {'allowedMentions': { 'users' : []}} : null);
+                        ? ('The feed is currently set to send new posts to '
+                            + msg.guild.channels.cache.get(settings[serverId].feedChannel).toString()
+                            + (settings[serverId].feedRole ? (', and mention the ' + msg.guild.roles.cache.get(settings[serverId].feedRole).toString() + ' role') : '') + '.')
+                        : 'The feed is currently turned off.', settings[serverId].feedRole ? { 'allowedMentions': { 'users': [] } } : null);
             }
 
             // <===== ADMIN ONLY COMMANDS =====> //
@@ -1129,7 +1172,7 @@ client.on('message', msg => {
             }
         }
     } else console.log(`Error: No server id, no server to post to.`);
-}); 
+});
 
 // MAIN END
 
