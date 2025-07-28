@@ -21,4 +21,4 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/calliecorner/elite-news-bot:latest
+            ghcr.io/Callie-Corner/elite-news-bot:latest
